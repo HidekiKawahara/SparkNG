@@ -1,0 +1,34 @@
+Release note for SparkNG
+
+Hideki Kawahara
+Professor Emeritus, Wakayama University, Japan
+mailto:kawahara@sys.wakayama-u.ac.jp
+
+History
+SparkNG (Speech Production and Auditory perception Research Kernel the Next Generation) is a collection of Matlab Tools designed for mainly introduction to speech and hearing science. They were distributed in two independent packages.  One is "Matlab realtime tools" (Creative Commons license) and the other is "Matlab speech production tool" (BSD two clause license), since the former only consists of elemetary textbook algorithms. By merging these two distributions and licensing them under BSD two clause license, more up-to-date algrithms can be introduced constituent tools. 
+
+Why NG?
+It does not mean "No Good". The author released an Pascal-based interactive speech tool, called "Spark" in 1986. In 1989, it was released as a comercial product under the name of "Onsei Koubou" (Speech factory, in English).  This time, the author decided to replicate the effort he did 30 years ago, in a more complehensive manner, hoping for this set of tools to facilitate progress in speech production, perception and processing research especially on aspects which make speech far more rich media for communication than texts. Advances in signal processing theory, algorithms and hardware performance make it possible to design a set of tools which supersede old "Spark" order of magnitude in every aspect. It deserves to be called "Next Generation."
+
+Hideki Kawahara
+20 October, 2015.
+
+Release note
+
+Version 0.83: special release for APSIPA 2015 date 20 December 2015.
+Extended LF model control and enhanced visualization
+GUI tuning is still under construction. May consists of many bugs.
+
+Version 0.81: release date 17 November 2015
+  Input sound monitoring and composite spectrum envelope display.
+
+Version 0.8: release date 10 November 2015.
+
+Version 0.7: release date 20 October 2015.
+
+Release v24
+GUIs are resizable.
+
+Release v22
+This version is preliminary. Please check the following page for updates.
+Release data: 21 August 2015
