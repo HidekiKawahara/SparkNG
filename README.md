@@ -7,3 +7,6 @@ SparkNG/
 
 
 ```
+
+# Release note
+This repository is a new start of SparkNG on Git
