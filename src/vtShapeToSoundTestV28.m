@@ -360,10 +360,13 @@ LFparameters.tc = updatedHandles.LFparametersBaseSet(1,4);
 updatedHandles.LFparameters = LFparameters;
 updatedHandles.LFDesigner = [];
 %--- equalizer design
-cosineCoefficient = [0.355768 0.487396 0.144232 0.012604]; % Nuttall win12
-upperLimit = 50;
-halfSample = 50;
-updatedHandles.equalizerStr = equalizerDesignAAFX(cosineCoefficient,upperLimit,halfSample);
+%cosineCoefficient = [0.355768 0.487396 0.144232 0.012604]; % Nuttall win12
+%upperLimit = 50;
+%halfSample = 50;
+hc = [0.2625000000  0.4265625000  0.2250000000  0.0726562500 ...
+  0.0125000000  0.0007812500];
+updatedHandles.equalizerStr = equalizerDesignAAFX(hc, 68, 80, 1.5);
+%updatedHandles.equalizerStr = equalizerDesignAAFX(cosineCoefficient,upperLimit,halfSample, 1.5);
 end
 
 function rotateCamera(src,evnt,handles)

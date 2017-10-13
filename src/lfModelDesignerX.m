@@ -193,10 +193,13 @@ ylabel('level (dB re. at F0)');
 title('source spectrum with +6dB/oct emphasis');
 grid on;
 %--- equalizer design
-cosineCoefficient = [0.355768 0.487396 0.144232 0.012604]; % Nuttall win12
-upperLimit = 50;
-halfSample = 50;
-updatedHandles.equalizerStr = equalizerDesignAAFX(cosineCoefficient,upperLimit,halfSample);
+%cosineCoefficient = [0.355768 0.487396 0.144232 0.012604]; % Nuttall win12
+%upperLimit = 50;
+%halfSample = 50;
+hc = [0.2625000000  0.4265625000  0.2250000000  0.0726562500 ...
+  0.0125000000  0.0007812500];
+updatedHandles.equalizerStr = equalizerDesignAAFX(hc, 68, 80, 1.5);
+%updatedHandles.equalizerStr = equalizerDesignAAFX(cosineCoefficient,upperLimit,halfSample);
 %--- set other voicing parameters
 updatedHandles.LFparameters = LFparameters;
 updatedHandles.duration = 0.5; % in second
@@ -789,7 +792,7 @@ sourceStructure = guidata(handles.LFModelDesignerFigure);
 fs = sourceStructure.samplingFrequency;
 LFparameters = sourceStructure.LFparameters;
 f0BaseStr = generateF0baseStructure(sourceStructure);
-outStr = AAFLFmodelFromF0Trajectory(f0BaseStr.f0Trajectory,f0BaseStr.temporalPositions,fs, ...
+outStr = AAFLFmodelFromF0Trajectory6T(f0BaseStr.f0Trajectory,f0BaseStr.temporalPositions,fs, ...
     LFparameters.tp,LFparameters.te,LFparameters.ta,LFparameters.tc);
 x = outStr.antiAliasedSignal;
 sourceStructure.synthStructure.LFparameters = LFparameters;
