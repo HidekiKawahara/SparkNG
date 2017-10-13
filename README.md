@@ -10,6 +10,8 @@
 
 # GUI applications
 
+  Set MATLAB path to "src" directory.
+
 <dl>
   <dt>recordingGUIV7</dt>
   <dd>Realtime FFT analyzer with an interactive spectrogram with a time-frequency region playback.</dd>
@@ -23,6 +25,20 @@
   <dd>Realtime display of fo, event, 1/3 octave levels, waveform and other parameters. This is a sample code.</dd>
 </dl>
 
+# Test script
+
+  Test scripts are in "test" directory.
+
 # Release note
-This repository is a new start of SparkNG on Git. 
+
+  This repository is a new start of SparkNG on Git. 
 The remote directory was created on 12/Oct./2017.
+
+# Development environment
+
+<dl>
+  <dt>MacBook Pro 13", early 2015</dt>
+  <dd>MATLAB R2017b, signalprocessing toolbox</dd>
+  <dt>Windows 10</dt>
+  <dd>MATLAB R2017b, signalprocessing toolbox</dd>
+</dl>
