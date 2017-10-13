@@ -8,9 +8,13 @@
 
 [1] Kawahara, Hideki. "SparkNG: Interactive MATLAB Tools for Introduction to Speech Production, Perception and Processing Fundamentals and Application of the Aliasing-Free LF Model Component." In INTERSPEECH, pp. 1180-1181. 2016.
 
+# How to install
+
+  Set MATLAB path to "src," "GUI," "test," and "example" directories.
+
 # GUI applications
 
-  Set MATLAB path to "src" directory.
+  GUI applications are in "GUI" directory.
 
 <dl>
   <dt>recordingGUIV7</dt>
@@ -24,6 +28,10 @@
   <dt>eventScopeR4</dt>
   <dd>Realtime display of fo, event, 1/3 octave levels, waveform and other parameters. This is a sample code.</dd>
 </dl>
+
+# Core functions
+
+  MATLAB core functions are in "src" directory.
 
 # Test script
 
