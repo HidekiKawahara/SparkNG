@@ -94,7 +94,7 @@ end
 hc = [0.2624710164 0.4265335164 0.2250165621 0.0726831633 0.0125124215 0.0007833203];
 equalizerStr = equalizerDesignAAFX(hc, 68, 80, 1.5);
 a = equalizerStr.iirCoefficient;
-yfix = filter(sum(a), a, outSignal);
+yfix = filter(sum(a) * [0 0 1], a, outSignal);
 
 %%
 outStr.antiAliasedSignal = yfix;

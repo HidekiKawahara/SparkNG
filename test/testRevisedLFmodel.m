@@ -1,10 +1,9 @@
-%% Test script for revised AA Fujisaki-Ljungqvist model
+%% Test revised version of the antialiased L-F (Fant and Liliencrants) model
 % This is free to modify and use.
-% 24, 25/Jan./2017 by Hideki Kawahara
-% 20/Feb./2017
+% 14/Oct./2017 by Hideki Kawahara
 
-%clear all
 close all
+
 %% Desing a time varying fo trajectory
 % The fo value is set very high to illustrate antialiasing behavior clearly.
 
@@ -15,27 +14,25 @@ mean_fO = 887; % Hz
 vibrato_f = 5.2;% Hz
 vibrato_depth = 6;% cent for peak deviation
 
-fOi = 2.0 .^ (log2(mean_fO) + vibrato_depth / 1200 * sin(2 * pi * vibrato_f * tt + 0 * randn(length(tt), 1)));
-%% Set Fujisaki-Ljungqvist model parameters
+foi = 2.0 .^ (log2(mean_fO) + vibrato_depth / 1200 * sin(2 * pi * vibrato_f * tt + 0 * randn(length(tt), 1)));
+%% Set L-F model parameters
 
-R = 0.38;
-F = 0.15;
-D = 0.12;
+% This is a modal parameter set
+tp = 0.4134;
+te = 0.5530;
+ta = 0.0041;
+tc = 0.5817;
 
-A = 0.2;
-B = -1;
-C = -0.6;
+%% Generate L-F model output 
 
-%% Generate F-L model output 
-
-output_const = AAFjLjmodelFromFOTrajectoryR(fOi, fs, A, B, C, R, F, D);
+output = AAFLFmodelFromF0Trajectory6T(foi,tt,fs,tp,te,ta,tc);
 
 %% Display waveforms of the direct digitization, antialiasing only and
 % antialiasing followed by equalizaiton
 
-y = output_const.antiAliasedSignal;
-y_only = output_const.antiAliasedOnly;
-y_direct = output_const.rawSignal;
+y = output.antiAliasedSignal;
+y_only = output.antiAliasedOnly;
+y_direct = output.LFmodelOut;
 figure;
 plot((0:length(y) - 1) / fs, y_direct, 'c', 'linewidth', 5);
 hold all
@@ -44,7 +41,7 @@ plot((0:length(y) - 1) / fs, y, 'k');
 grid on;
 set(gca, 'fontsize', 15, 'fontname', 'Helvetica');
 xlabel('time (s)');
-axis([[1 3] / 1000 -1 0.3])
+axis([[0.5 2.5] / 1000 -1 0.3])
 legend('direct', 'antialias only', 'a.a. with eq', 'location', 'southwest');
 
 %% This also illustates how to use stftSpectrogramStructure
@@ -74,11 +71,11 @@ plot(sgramStrY.frequencyAxis, pw_only - max(pw_only), 'r', 'linewidth', 2);
 plot(sgramStrY.frequencyAxis, pw_antWithEq - max(pw_antWithEq), 'k',  ...
   'linewidth', 4);
 set(gca, 'fontsize', 15, 'fontname', 'Helvetica', 'linewidth', 2);
-axis([0 fs/2 -180 5]);
+axis([0 fs/2 -180 18]);
 ylabel('leval (dB)');
 xlabel('frequency (Hz)');
 legend('direct', 'antialiasing only', 'antialiasing with eq', 'location', 'northeast');
-%print -depsc aaFLforIS.eps
+%print -depsc aaLFforIS.eps
 
 %%
 sgram_6term = 10 * log10(sgramStrY.rawSpectrogram(:, 100:900));
@@ -96,7 +93,7 @@ xlabel('time (s)');
 ylabel('frequency (Hz)');
 colorbar
 title('antialiasing with equalization');
-%print -depsc aaFLmodelRevSgramIS.eps
+%print -depsc aaLFmodelRevSgramIS.eps
 figure;imagesc(tt([100 900]),[0 fs/2], sgram_only);
 set(gca, 'clim', [-140 0])
 axis('xy');
@@ -105,7 +102,7 @@ xlabel('time (s)');
 ylabel('frequency (Hz)');
 colorbar
 title('Antialiasing only');
-%print -depsc aaFLmodelOldSgramIS.eps
+%print -depsc aaLFmodelOldSgramIS.eps
 figure;imagesc(tt([100 900]),[0 fs/2], sgram_direct);
 set(gca, 'clim', [-140 0])
 axis('xy');
@@ -114,7 +111,5 @@ xlabel('time (s)');
 ylabel('frequency (Hz)');
 colorbar
 title('direct');
-%print -depsc aaFLmodelDirectSgramIS.eps
-
-
+%print -depsc aaLFmodelDirectSgramIS.eps
 
