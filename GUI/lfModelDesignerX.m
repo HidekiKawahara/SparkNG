@@ -251,6 +251,8 @@ updatedHandles.timeInF0Reference = updatedHandles.duration/2;
 updatedHandles.timeInF0KnobHandle = plot(updatedHandles.duration/2*[1 1],[-6 56],'g','linewidth',1);
 grid on;
 updatedHandles.f0TimeKnobHit = 0;
+modelName = [handles.sourceModel ' model signal'];
+set(handles.LFmodelText, 'string', modelName);
 %--- handler assignment
 set(handles.LFModelDesignerFigure,'WindowButtonMotionFcn',@moveWhileMouseUp);
 set(handles.LFModelDesignerFigure,'windowbuttonDownFcn',@MousebuttonDown);
