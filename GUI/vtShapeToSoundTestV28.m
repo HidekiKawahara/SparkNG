@@ -363,8 +363,7 @@ updatedHandles.LFDesigner = [];
 %cosineCoefficient = [0.355768 0.487396 0.144232 0.012604]; % Nuttall win12
 %upperLimit = 50;
 %halfSample = 50;
-hc = [0.2625000000  0.4265625000  0.2250000000  0.0726562500 ...
-  0.0125000000  0.0007812500];
+hc = [0.2624710164 0.4265335164 0.2250165621 0.0726831633 0.0125124215 0.0007833203];
 updatedHandles.equalizerStr = equalizerDesignAAFX(hc, 68, 80, 1.5);
 %updatedHandles.equalizerStr = equalizerDesignAAFX(cosineCoefficient,upperLimit,halfSample, 1.5);
 end
