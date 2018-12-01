@@ -27,6 +27,8 @@
   <dd>Speech production simulator which allows intereactive manipulation of the vocal tract area function, resonance frequencies and bandwidths, and glottal source wave parameters.</dd>
   <dt>eventScopeR4</dt>
   <dd>Realtime display of fo, event, 1/3 octave levels, waveform and other parameters. This is a sample code.</dd>
+  <dt>waveletVisualizer</dt>
+  <dd>Realtime visualization of wavelet analysis results; phase, amplitude, instantaneous frequency, and group delay.</dd>
 </dl>
 
 # Core functions
@@ -45,8 +47,8 @@ The remote directory was created on 12/Oct./2017.
 # Development environment
 
 <dl>
-  <dt>MacBook Pro 13", early 2015</dt>
-  <dd>MATLAB R2017b, signalprocessing toolbox</dd>
+  <dt>MacBook Pro 13", late 2018</dt>
+  <dd>MATLAB R2018b, signalprocessing toolbox</dd>
   <dt>Windows 10</dt>
-  <dd>MATLAB R2017b, signalprocessing toolbox</dd>
+  <dd>MATLAB R2018a, signalprocessing toolbox</dd>
 </dl>
