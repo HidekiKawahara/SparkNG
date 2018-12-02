@@ -135,12 +135,12 @@ myGUIdata.low_frequency = 110 * 2^(-1/3);%100;
 myGUIdata.high_freuency = 5000;
 myGUIdata.halfTimeSpan = 0.008; % 8 ms (default)
 myGUIdata.fftl = 2048;
-myGUIdata.stretching_factor = 1.25;
+myGUIdata.stretching_factor = 1.0;
 myGUIdata.synchPhase = -120;
 set(myGUIdata.viewerWidthPopup, 'value', 3);
 set(myGUIdata.fLowPopup, 'value', 3);
 set(myGUIdata.fHighPopup, 'value', 2);
-set(myGUIdata.stretchPopup, 'value', 3);
+set(myGUIdata.stretchPopup, 'value', 2);
 set(myGUIdata.phaseEdit, 'string', -120);
 end
 
