@@ -34,7 +34,7 @@ function varargout = waveletVisualizer(varargin)
 %distributed under the License is distributed on an "AS IS" BASIS,
 %WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 %See the License for the specific language governing permissions and
-%limitations under the License. 
+%limitations under the License.
 
 % Edit the above text to modify the response to help waveletVisualizer
 
@@ -159,80 +159,82 @@ buffer_index = 1:3 * n_data;
 %size(myGUIdata.imageBuffer)
 switch get(myGUIdata.recordObj1,'running')
     case 'on'
-        myGUIdata.tmpAudio = getaudiodata(myGUIdata.recordObj1);
-        if length(myGUIdata.tmpAudio) >  max_bias * 4 + 3 * n_data
-            x = myGUIdata.tmpAudio(end-(max_bias * 4 + 3 * n_data)+1:end);
-            for ii = 1:myGUIdata.n_channles
-                y = fftfilt(wvltStr.wvlt(ii).w, x);
-                myGUIdata.imageBuffer(ii, :) = y(wvltStr.wvlt(ii).bias + wvltStr.wvlt(1).bias + buffer_index);
-            end
-            x_original = x(buffer_index + wvltStr.wvlt(1).bias);
-            instFreqBuffer = angle(myGUIdata.imageBuffer ./ myGUIdata.imageBuffer(:, max(1, buffer_index - 1)));
-            myGUIdata.imageBufferTmp = angle(myGUIdata.imageBuffer);
-            rawSTD = (std(instFreqBuffer(:, 2:end)') * myGUIdata.samplingFrequency / 2 / pi) .^ 2;
-            rawSTD = sqrt(rawSTD([1 1:end-1]) + rawSTD + rawSTD([2:end end]));
-            fsdData = log(rawSTD(:) ./ fc_list(:));
-            bw_list = 1 ./ ((2^(1/channels_oct/2)-2^(-1/channels_oct/2)) * fc_list * 2 * pi);
-            gd_gram_raw = -diag(bw_list) * angle(myGUIdata.imageBuffer ./ ...
-                myGUIdata.imageBuffer([1 1:end-1], :));
-            gd_gram = diag(fc_list) * gd_gram_raw;
-            gdData = std(max(-1, min(1, gd_gram(:, 2:end)')));
-            gdData(1) = gdData(2);
-            gdData = log((gdData([1 1:end-1]) + gdData +gdData([2:end end])) / 3);
-            mixData = gdData(:) + fsdData(:); % mixed cost function for fo
-            [~, min_ch] = min(mixData);%gdData(:) + fsdData(:));
-            fund_phase = angle(myGUIdata.imageBuffer(min_ch, :) * exp(-1i * myGUIdata.synchPhase / 360 * 2 * pi)); %myGUIdata.synchPhase
-            avfo = mean(instFreqBuffer(min_ch, 2:end)) * myGUIdata.samplingFrequency / 2 / pi;
-            syncID = buffer_index(fund_phase .* fund_phase(max(1, buffer_index - 1)) < 0 & ...
-                fund_phase(max(1, buffer_index - 1)) < fund_phase & ...
-                buffer_index > n_data & buffer_index < buffer_index(end) - n_data);
-            if ~isempty(syncID)
-                [~, bias_center] = min(abs(syncID - buffer_index(end) / 2));
-                if isempty(bias_center)
-                    bias_center = round(buffer_index(end) / 2);
+        if get(myGUIdata.recordObj1,'TotalSamples')  >  max_bias * 4 + 3 * n_data
+            myGUIdata.tmpAudio = getaudiodata(myGUIdata.recordObj1);
+            if length(myGUIdata.tmpAudio) >  max_bias * 4 + 3 * n_data
+                x = myGUIdata.tmpAudio(end-(max_bias * 4 + 3 * n_data)+1:end);
+                for ii = 1:myGUIdata.n_channles
+                    y = fftfilt(wvltStr.wvlt(ii).w, x);
+                    myGUIdata.imageBuffer(ii, :) = y(wvltStr.wvlt(ii).bias + wvltStr.wvlt(1).bias + buffer_index);
                 end
-                center_id = syncID(bias_center);
-            else
-                center_id = round(buffer_index(end) / 2);
+                x_original = x(buffer_index + wvltStr.wvlt(1).bias);
+                instFreqBuffer = angle(myGUIdata.imageBuffer ./ myGUIdata.imageBuffer(:, max(1, buffer_index - 1)));
+                myGUIdata.imageBufferTmp = angle(myGUIdata.imageBuffer);
+                rawSTD = (std(instFreqBuffer(:, 2:end)') * myGUIdata.samplingFrequency / 2 / pi) .^ 2;
+                rawSTD = sqrt(rawSTD([1 1:end-1]) + rawSTD + rawSTD([2:end end]));
+                fsdData = log(rawSTD(:) ./ fc_list(:));
+                bw_list = 1 ./ ((2^(1/channels_oct/2)-2^(-1/channels_oct/2)) * fc_list * 2 * pi);
+                gd_gram_raw = -diag(bw_list) * angle(myGUIdata.imageBuffer ./ ...
+                    myGUIdata.imageBuffer([1 1:end-1], :));
+                gd_gram = diag(fc_list) * gd_gram_raw;
+                gdData = std(max(-1, min(1, gd_gram(:, 2:end)')));
+                gdData(1) = gdData(2);
+                gdData = log((gdData([1 1:end-1]) + gdData +gdData([2:end end])) / 3);
+                mixData = gdData(:) + fsdData(:); % mixed cost function for fo
+                [~, min_ch] = min(mixData);%gdData(:) + fsdData(:));
+                fund_phase = angle(myGUIdata.imageBuffer(min_ch, :) * exp(-1i * myGUIdata.synchPhase / 360 * 2 * pi)); %myGUIdata.synchPhase
+                avfo = mean(instFreqBuffer(min_ch, 2:end)) * myGUIdata.samplingFrequency / 2 / pi;
+                syncID = buffer_index(fund_phase .* fund_phase(max(1, buffer_index - 1)) < 0 & ...
+                    fund_phase(max(1, buffer_index - 1)) < fund_phase & ...
+                    buffer_index > n_data & buffer_index < buffer_index(end) - n_data);
+                if ~isempty(syncID)
+                    [~, bias_center] = min(abs(syncID - buffer_index(end) / 2));
+                    if isempty(bias_center)
+                        bias_center = round(buffer_index(end) / 2);
+                    end
+                    center_id = syncID(bias_center);
+                else
+                    center_id = round(buffer_index(end) / 2);
+                end
+                selector = max(1, min(buffer_index(end), base_index + center_id - round(base_index(end) / 2)));
+                fs = myGUIdata.samplingFrequency;
+                contents = cellstr(get(myGUIdata.displayImagePopup,'String'));
+                %myGUIdata.displayAttribute = contents{get(myGUIdata.displayImagePopup,'Value')};
+                switch contents{get(myGUIdata.displayImagePopup,'Value')} %myGUIdata.displayAttribute
+                    case 'Phase'
+                        myGUIdata.waveletImage = myGUIdata.imageBufferTmp(:, selector);
+                    case 'Inst. Freq. /fc'
+                        myGUIdata.waveletImage = max(0.75, min(1.4, diag(1 ./ fc_list)...
+                            * instFreqBuffer(:, selector) * fs / 2 / pi));
+                    case 'Group delay*fc'
+                        myGUIdata.waveletImage = max(-1, min(1, gd_gram(:, selector)));
+                    case 'Absolute value'
+                        levelBuf = 20 * log10(abs(myGUIdata.imageBuffer(:, selector)));
+                        mx_level = max(max(levelBuf));
+                        myGUIdata.waveletImage = max(mx_level - 70, levelBuf);
+                end
+                myGUIdata.gainData = mean(abs(myGUIdata.imageBuffer(:, selector)) .^ 2, 2);
+                myGUIdata.gainData = 10 * log10(myGUIdata.gainData);
+                set(myGUIdata.wvltImageHandle,'cdata',myGUIdata.waveletImage);
+                set(myGUIdata.freqSDHandle, 'xdata', mixData / max(abs(mixData)) * xdata(end) * 1000);
+                ydata = x_original(base_index + center_id - round(base_index(end) / 2));
+                set(myGUIdata.waveHandle,'ydata', ydata);
+                set(myGUIdata.dBpowerAxis, 'xlim', [-69 0]);
+                set(myGUIdata.gainHandle, 'xdata', -80 - myGUIdata.gainData);
+                fo_in_channel = 1 + log2(avfo / myGUIdata.low_frequency) * myGUIdata.channels_in_octave;
+                set(myGUIdata.foCursor, 'ydata', fo_in_channel * [1 1]);
+                set(myGUIdata.waveAxis,'ylim',max(abs(ydata))*[-1 1]);
+                set(myGUIdata.foViewer, 'String', num2str(avfo, '%6.1f'));
+                [~, croma_id] = min(abs(avfo - myGUIdata.croma_scale));
+                myGUIdata.avfoDisplay = myGUIdata.avfoDisplay * 0.0 + avfo * 1.0;
+                [~, croma_id_smooth] = min(abs(myGUIdata.avfoDisplay - myGUIdata.croma_scale));
+                set(myGUIdata.tunerHandle, 'ydata', [0 0] + ...
+                    1200 * log2(myGUIdata.avfoDisplay / myGUIdata.croma_scale(croma_id_smooth)));
+                set(myGUIdata.noteNameText, 'String', myGUIdata.note_name_struct.name{croma_id_smooth});
             end
-            selector = max(1, min(buffer_index(end), base_index + center_id - round(base_index(end) / 2)));
-            fs = myGUIdata.samplingFrequency;
-            contents = cellstr(get(myGUIdata.displayImagePopup,'String'));
-%myGUIdata.displayAttribute = contents{get(myGUIdata.displayImagePopup,'Value')};
-            switch contents{get(myGUIdata.displayImagePopup,'Value')} %myGUIdata.displayAttribute
-                case 'Phase'
-                    myGUIdata.waveletImage = myGUIdata.imageBufferTmp(:, selector);
-                case 'Inst. Freq. /fc'
-                    myGUIdata.waveletImage = max(0.75, min(1.4, diag(1 ./ fc_list)...
-                        * instFreqBuffer(:, selector) * fs / 2 / pi));
-                case 'Group delay*fc'
-                    myGUIdata.waveletImage = max(-1, min(1, gd_gram(:, selector)));
-                case 'Absolute value'
-                    levelBuf = 20 * log10(abs(myGUIdata.imageBuffer(:, selector)));
-                    mx_level = max(max(levelBuf));
-                    myGUIdata.waveletImage = max(mx_level - 70, levelBuf);
-            end
-            myGUIdata.gainData = mean(abs(myGUIdata.imageBuffer(:, selector)) .^ 2, 2);
-            myGUIdata.gainData = 10 * log10(myGUIdata.gainData);
-            set(myGUIdata.wvltImageHandle,'cdata',myGUIdata.waveletImage);
-            set(myGUIdata.freqSDHandle, 'xdata', mixData / max(abs(mixData)) * xdata(end) * 1000);
-            ydata = x_original(base_index + center_id - round(base_index(end) / 2));
-            set(myGUIdata.waveHandle,'ydata', ydata);
-            set(myGUIdata.dBpowerAxis, 'xlim', [-69 0]);
-            set(myGUIdata.gainHandle, 'xdata', -80 - myGUIdata.gainData);
-            fo_in_channel = 1 + log2(avfo / myGUIdata.low_frequency) * myGUIdata.channels_in_octave;
-            set(myGUIdata.foCursor, 'ydata', fo_in_channel * [1 1]);
-            set(myGUIdata.waveAxis,'ylim',max(abs(ydata))*[-1 1]);
-            set(myGUIdata.foViewer, 'String', num2str(avfo, '%6.1f'));
-            [~, croma_id] = min(abs(avfo - myGUIdata.croma_scale));
-            myGUIdata.avfoDisplay = myGUIdata.avfoDisplay * 0.0 + avfo * 1.0;
-            [~, croma_id_smooth] = min(abs(myGUIdata.avfoDisplay - myGUIdata.croma_scale));
-            set(myGUIdata.tunerHandle, 'ydata', [0 0] + ...
-                1200 * log2(myGUIdata.avfoDisplay / myGUIdata.croma_scale(croma_id_smooth)));
-            set(myGUIdata.noteNameText, 'String', myGUIdata.note_name_struct.name{croma_id_smooth});
+            myGUIdata.audioRecorderCount = myGUIdata.audioRecorderCount - 1;
+            set(myGUIdata.counterTxt, 'String', num2str(myGUIdata.audioRecorderCount));
         end
-        myGUIdata.audioRecorderCount = myGUIdata.audioRecorderCount - 1;
-        set(myGUIdata.counterTxt, 'String', num2str(myGUIdata.audioRecorderCount));
 end
 switch get(myGUIdata.timerForWaveDraw, 'running')
     case 'off'
@@ -320,9 +322,9 @@ for ii = 2:7
     if ii * 12 + 1 <= length(croma_scale_channel) && ...
             ii * 12 + 1 + 3 - 12 <= length(croma_scale_channel) && ...
             ii * 12 + 1 + 3 + 4 - 12 <= length(croma_scale_channel)
-    text(-66, croma_scale_channel(ii * 12 + 1), ['A' num2str(ii)])
-    text(-66, croma_scale_channel(ii * 12 + 1 + 3 - 12), ['C' num2str(ii)])
-    text(-66, croma_scale_channel(ii * 12 + 1 + 3 + 4 - 12), ['E' num2str(ii)])
+        text(-66, croma_scale_channel(ii * 12 + 1), ['A' num2str(ii)])
+        text(-66, croma_scale_channel(ii * 12 + 1 + 3 - 12), ['C' num2str(ii)])
+        text(-66, croma_scale_channel(ii * 12 + 1 + 3 + 4 - 12), ['E' num2str(ii)])
     end
 end
 note_name_base = {'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'};
