@@ -22,7 +22,7 @@ function varargout = waveletVisualizer(varargin)
 
 % Designed and implemented by Hideki Kawahara
 %
-%Copyright 2017 Hideki Kawahara
+%Copyright 2018 Hideki Kawahara
 %
 %Licensed under the Apache License, Version 2.0 (the "License");
 %you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ function varargout = waveletVisualizer(varargin)
 
 % Edit the above text to modify the response to help waveletVisualizer
 
-% Last Modified by GUIDE v2.5 02-Dec-2018 00:37:38
+% Last Modified by GUIDE v2.5 20-Aug-2019 23:34:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -722,6 +722,43 @@ function phaseEdit_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 
 % Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+end
+
+
+% --- Executes on selection change in wintypePopUp.
+function wintypePopUp_Callback(hObject, eventdata, handles)
+% hObject    handle to wintypePopUp (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns wintypePopUp contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from wintypePopUp
+stopbutton_Callback(hObject, eventdata, handles);
+myGUIdata = guidata(hObject);
+myGUIdata.wtypeId = get(hObject,'Value');
+delete(myGUIdata.wvltImageHandle);
+delete(myGUIdata.gainHandle);
+cla(myGUIdata.tunerAxis);
+cla(myGUIdata.dBpowerAxis);
+cla(myGUIdata.waveletAxis);
+cla(myGUIdata.waveAxis);
+myGUIdata = initializeGraphics(myGUIdata);
+guidata(hObject, myGUIdata);
+startButton_Callback(hObject, eventdata, handles);
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function wintypePopUp_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to wintypePopUp (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
