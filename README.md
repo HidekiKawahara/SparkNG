@@ -2,7 +2,7 @@
 
 # SparkNG MATLAB realtime/interactive tools for speech science research and education
 
-  MATLAB-based GUI application with realtime audio input/output.
+  MATLAB-based GUI application with realtime audio input/output. Please visit SP3ARK for the up-to-date set of new tools! (4 March 2021)
   
 ## This series is getting obsolate. Please visit SP3ARK for up-to-date series of tools!
 
